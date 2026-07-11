@@ -26,13 +26,7 @@
         --shadow: 0 10px 25px -5px rgba(139, 92, 246, 0.3);
         --shadow-lg: 0 25px 50px -12px rgba(139, 92, 246, 0.4);
     }
-
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
         background: var(--bg);
@@ -44,7 +38,6 @@
             radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.1) 0%, transparent 50%),
             radial-gradient(circle at 80% 20%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
     }
-
     .bg-glow {
         position: fixed;
         top: -30%;
@@ -57,8 +50,410 @@
         z-index: 0;
         animation: pulseGlow 4s ease-in-out infinite;
     }
-
     @keyframes pulseGlow {
         0%, 100% { opacity: 0.6; transform: translateX(-50%) scale(1); }
         50% { opacity: 1; transform: translateX(-50%) scale(1.05); }
     }
+    .container { max-width: 1200px; margin: 0 auto; padding: 1.5rem 1rem; position: relative; z-index: 1; }
+    header { text-align: center; margin-bottom: 2rem; animation: fadeInDown 0.6s ease-out; }
+    .logo-badge {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        background: linear-gradient(135deg, var(--purple), var(--pink));
+        padding: 0.6rem 1.5rem; border-radius: 999px; font-size: 0.875rem; font-weight: 800;
+        margin-bottom: 1.25rem; box-shadow: var(--neon-glow), var(--shadow);
+        text-shadow: 0 0 10px rgba(255,255,255,0.5); letter-spacing: 0.05em; text-transform: uppercase;
+        border: 1px solid rgba(255,255,255,0.2);
+    }
+    h1 {
+        font-size: clamp(2.25rem, 6vw, 4rem); font-weight: 900;
+        background: linear-gradient(135deg, var(--yellow) 0%, var(--purple) 50%, var(--pink) 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        margin-bottom: 0.75rem; letter-spacing: -0.03em;
+        filter: drop-shadow(0 0 30px rgba(139, 92, 246, 0.5)); line-height: 1.1;
+    }
+    .subtitle { font-size: clamp(1rem, 2.5vw, 1.25rem); color: var(--text-muted); font-weight: 500; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+    .card {
+        background: rgba(19, 19, 31, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+        border-radius: 1.5rem; padding: 1.5rem; box-shadow: var(--shadow-lg), var(--neon-glow);
+        border: 1px solid rgba(139, 92, 246, 0.3); margin-bottom: 1.5rem; animation: fadeInUp 0.6s ease-out;
+        position: relative; overflow: hidden;
+    }
+    .card::before {
+        content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(139, 92, 246, 0.1), transparent);
+        animation: shimmer 3s infinite;
+    }
+    @keyframes shimmer { 100% { left: 100%; } }
+    .controls { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 1.5rem; justify-content: center; }
+    .btn {
+        padding: 0.875rem 1.5rem; border: none; border-radius: 0.75rem; font-weight: 700; font-size: 0.9375rem;
+        cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); display: inline-flex;
+        align-items: center; gap: 0.5rem; text-transform: uppercase; letter-spacing: 0.05em;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); position: relative; overflow: hidden; text-decoration: none;
+    }
+    .btn::before {
+        content: ''; position: absolute; top: 50%; left: 50%; width: 0; height: 0; border-radius: 50%;
+        background: rgba(255,255,255,0.3); transform: translate(-50%, -50%); transition: width 0.6s, height 0.6s;
+    }
+    .btn:hover::before { width: 300px; height: 300px; }
+    .btn:active { transform: scale(0.96); }
+    .btn-chord {
+        background: rgba(28, 28, 43, 0.8); color: var(--text); border: 1px solid rgba(139, 92, 246, 0.3);
+        flex: 1 1 calc(50% - 0.375rem); min-width: 140px; justify-content: center; backdrop-filter: blur(10px);
+    }
+    .btn-chord:hover, .btn-chord.active {
+        background: linear-gradient(135deg, var(--purple), var(--pink)); color: white; border-color: transparent;
+        box-shadow: var(--neon-glow); transform: translateY(-2px);
+    }
+    .btn-anti {
+        background: linear-gradient(135deg, var(--yellow), var(--purple)); color: var(--bg); width: 100%;
+        justify-content: center; font-size: 1.1rem; padding: 1.125rem;
+        box-shadow: var(--neon-glow), 0 8px 20px rgba(250, 204, 21, 0.3); text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+    .btn-whatsapp {
+        background: linear-gradient(135deg, #25D366, #128C7E); color: white; width: 100%;
+        justify-content: center; font-size: 1rem; padding: 1rem;
+        box-shadow: 0 0 20px rgba(37, 211, 102, 0.5), 0 8px 20px rgba(37, 211, 102, 0.3);
+    }
+    .btn-whatsapp:hover {
+        box-shadow: 0 0 30px rgba(37, 211, 102, 0.8), 0 12px 30px rgba(37, 211, 102, 0.5);
+        transform: translateY(-3px);
+    }
+    .piano-wrapper {
+        overflow-x: auto; overflow-y: hidden; padding: 1.5rem 0; margin: 0 -1rem;
+        padding-left: 1rem; padding-right: 1rem; -webkit-overflow-scrolling: touch; perspective: 1000px;
+    }
+    .piano {
+        display: flex; position: relative; height: 280px; min-width: 600px; max-width: 100%;
+        margin: 0 auto; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent;
+        transform: rotateX(5deg); transform-style: preserve-3d;
+    }
+    .key {
+        position: relative; cursor: pointer; transition: all 0.1s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex; align-items: flex-end; justify-content: center; padding-bottom: 1rem;
+        font-size: 0.75rem; font-weight: 700;
+    }
+    .white-key {
+        background: linear-gradient(180deg, #ffffff 0%, var(--white-key) 100%);
+        border: 1px solid rgba(203, 213, 225, 0.5); border-radius: 0 0 0.625rem 0.625rem; flex: 1; color: var(--bg);
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15), inset 0 -6px 12px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+        z-index: 1; transform-style: preserve-3d;
+    }
+    .white-key:active, .white-key.active {
+        background: linear-gradient(180deg, #e8e8e8 0%, var(--white-key-active) 100%);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2), inset 0 -2px 6px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.5), var(--neon-glow-strong);
+        transform: translateY(4px) translateZ(-5px); filter: brightness(1.1);
+    }
+    .black-key {
+        position: absolute; background: linear-gradient(180deg, #2d3748 0%, var(--black-key) 100%);
+        width: 8%; height: 60%; border-radius: 0 0 0.5rem 0.5rem; z-index: 2; color: var(--text);
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4), inset 0 -6px 12px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(15, 23, 42, 0.8);
+    }
+    .black-key:active, .black-key.active {
+        background: linear-gradient(180deg, #1a202c 0%, var(--black-key-active) 100%);
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.5), inset 0 -2px 6px rgba(0, 0, 0, 0.5), var(--neon-glow-strong);
+        transform: translateY(3px) translateZ(-3px); filter: brightness(1.2);
+    }
+    .key.highlight::before {
+        content: ''; position: absolute; top: 8%; left: 50%; transform: translateX(-50%);
+        width: 28px; height: 28px; background: radial-gradient(circle, var(--yellow) 0%, var(--purple) 100%);
+        border-radius: 50%; box-shadow: 0 0 20px rgba(250, 204, 21, 0.8), 0 0 40px rgba(139, 92, 246, 0.6), 0 0 60px rgba(236, 72, 153, 0.4);
+        animation: pulseNeon 1.5s ease-in-out infinite; z-index: 3;
+    }
+    @keyframes pulseNeon {
+        0%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+        50% { transform: translateX(-50%) scale(1.15); opacity: 0.9; }
+    }
+    .key-label { pointer-events: none; opacity: 0.6; font-size: 0.625rem; font-weight: 800; text-transform: uppercase; }
+    .message {
+        text-align: center; padding: 1.125rem; border-radius: 0.875rem; margin-top: 1.25rem;
+        font-weight: 700; display: none; animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1); backdrop-filter: blur(10px);
+    }
+    .message.success {
+        background: rgba(34, 197, 94, 0.2); border: 2px solid var(--success); color: var(--success);
+        display: block; box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+    }
+    .message.info {
+        background: rgba(139, 92, 246, 0.2); border: 2px solid var(--purple); color: #c4b5fd;
+        display: block; box-shadow: 0 0 30px rgba(139, 92, 246, 0.4);
+    }
+    .lead-section {
+        background: linear-gradient(135deg, rgba(139, 92, 246, 0.15), rgba(236, 72, 153, 0.15));
+        border: 2px solid rgba(139, 92, 246, 0.4);
+    }
+    .lead-section h2 { font-size: 1.75rem; margin-bottom: 0.75rem; text-align: center; font-weight: 900; }
+    .lead-section p { color: var(--text-muted); text-align: center; margin-bottom: 1.5rem; font-size: 1.0625rem; }
+    .keyboard-hint {
+        text-align: center; color: var(--text-muted); font-size: 0.875rem; margin-top: 1.25rem; padding: 1rem;
+        background: rgba(139, 92, 246, 0.08); border-radius: 0.75rem; border: 1px solid rgba(139, 92, 246, 0.2);
+        backdrop-filter: blur(10px);
+    }
+    .testimonials { display: grid; grid-template-columns: 1fr; gap: 1rem; margin-top: 1.5rem; }
+    .testimonial {
+        background: rgba(28, 28, 43, 0.6); padding: 1.25rem; border-radius: 1rem;
+        border: 1px solid rgba(139, 92, 246, 0.2); backdrop-filter: blur(10px);
+    }
+    .testimonial-text { font-style: italic; color: #cbd5e1; margin-bottom: 0.75rem; font-size: 0.9375rem; }
+    .testimonial-author { font-weight: 700; color: var(--yellow); font-size: 0.875rem; }
+    .stats {
+        display: flex; justify-content: space-around; flex-wrap: wrap; gap: 1.5rem; margin: 2rem 0; padding: 1.5rem;
+        background: rgba(139, 92, 246, 0.08); border-radius: 1rem; border: 1px solid rgba(139, 92, 246, 0.3);
+    }
+    .stat { text-align: center; }
+    .stat-number {
+        font-size: 2.5rem; font-weight: 900;
+        background: linear-gradient(135deg, var(--yellow), var(--purple));
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        filter: drop-shadow(0 0 20px rgba(139, 92, 246, 0.5));
+    }
+    .stat-label {
+        font-size: 0.875rem; color: var(--text-muted); text-transform: uppercase;
+        letter-spacing: 0.05em; font-weight: 600;
+    }
+    footer {
+        text-align: center; padding: 2.5rem 1rem; color: var(--text-muted); font-size: 0.9375rem;
+        margin-top: 3rem; border-top: 1px solid rgba(139, 92, 246, 0.2);
+    }
+    footer a {
+        color: var(--purple); text-decoration: none; font-weight: 700; transition: all 0.3s ease;
+    }
+    footer a:hover { color: var(--pink); text-shadow: 0 0 10px rgba(236, 72, 153, 0.8); }
+    @keyframes fadeInDown { from { opacity: 0; transform: translateY(-30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes slideIn { from { opacity: 0; transform: scale(0.9) translateY(-10px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+    .confetti {
+        position: fixed; width: 12px; height: 12px; pointer-events: none; z-index: 9999;
+        animation: confetti-fall 3s linear forwards; border-radius: 2px;
+    }
+    @keyframes confetti-fall { to { transform: translateY(100vh) rotate(720deg); opacity: 0; } }
+    @media (min-width: 640px) {
+        .container { padding: 2.5rem 2rem; }
+        .card { padding: 2.5rem; }
+        .btn-chord { flex: 0 1 auto; }
+        .piano { height: 340px; }
+        .key-label { font-size: 0.8125rem; }
+        .testimonials { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 390px) {
+        .piano { height: 220px; }
+        .btn { font-size: 0.8125rem; padding: 0.75rem 1rem; }
+        h1 { font-size: 1.875rem; }
+        .stat-number { font-size: 2rem; }
+    }
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+<div class="container">
+    <header>
+        <div class="logo-badge">
+            <span>🎹</span>
+            <span>ANTI-CINTAS</span>
+        </div>
+        <h1>PIANO ANTI-CINTAS</h1>
+        <p class="subtitle">Tocá sin teoría. Sin cintas. Sin excusas. Desde cero a tu primera canción.</p>
+    </header>
+    <div class="card">
+        <button class="btn btn-anti" id="antiModeBtn">
+            <span>⚡</span>
+            <span>MODO ANTI-CINTAS</span>
+        </button>
+        <div class="controls" style="margin-top: 1.5rem;">
+            <button class="btn btn-chord" data-chord="do-mayor">DO MAYOR</button>
+            <button class="btn btn-chord" data-chord="sol-mayor">SOL MAYOR</button>
+            <button class="btn btn-chord" data-chord="re-menor">RE MENOR</button>
+            <button class="btn btn-chord" data-chord="mi-menor">MI MENOR</button>
+            <button class="btn btn-chord" data-chord="fa-mayor">FA MAYOR</button>
+        </div>
+        <div class="piano-wrapper">
+            <div class="piano" id="piano"></div>
+        </div>
+        <div class="message" id="message"></div>
+        <div class="keyboard-hint">
+            💻 PC/Mac: Usá tu teclado - A S D F G H J K L para teclas blancas | W E T Y U para negras
+        </div>
+    </div>
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number" id="studentCount">2,847</div>
+            <div class="stat-label">Alumnos</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">4.9★</div>
+            <div class="stat-label">Rating</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">10</div>
+            <div class="stat-label">Acordes Pro</div>
+        </div>
+    </div>
+    <div class="card lead-section">
+        <h2>¿Querés aprender conmigo?</h2>
+        <p>Escribime directo por WhatsApp y te cuento cómo funciona el Método Anti-Cintas</p>
+        <a href="https://wa.me/393508429821?text=Hola%20Giuliano%21%20Quiero%20info%20del%20Método%20Anti-Cintas%20%F0%9F%8E%B9" target="_blank" class="btn btn-whatsapp">
+            <span>ESCRIBIR POR WHATSAPP</span>
+            <span>💬</span>
+        </a>
+    </div>
+    <div class="card">
+        <h2 style="text-align: center; margin-bottom: 1.5rem; font-size: 1.75rem; font-weight: 900;">Lo que dicen mis alumnos</h2>
+        <div class="testimonials">
+            <div class="testimonial">
+                <div class="testimonial-text">"En 2 semanas ya toco Wonderwall. Sin leer una partitura. Este método es fuego 🔥"</div>
+                <div class="testimonial-author">- Marco, 24 años</div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-text">"Siempre pensé que necesitaba años de estudio. Con Giuliano en 1 mes ya toco en mi iglesia 🙏"</div>
+                <div class="testimonial-author">- Sofia, 31 años</div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-text">"El mejor profe. Va al grano, sin vueltas. Ya compuse 3 canciones propias"</div>
+                <div class="testimonial-author">- Lucas, 19 años</div>
+            </div>
+            <div class="testimonial">
+                <div class="testimonial-text">"Tengo 45 y pensé que era tarde. Ahora toco para mis hijos todas las noches ❤"</div>
+                <div class="testimonial-author">- Roberto, 45 años</div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        Método Anti-Cintas por Giuliano Vega | Desde Milán 🇮🇹<br>
+        IG: <a href="https://www.instagram.com/vegagiuliano/" target="_blank">@vegagiuliano</a> | WhatsApp: <a href="https://wa.me/393508429821" target="_blank">+39 350 842 9821</a>
+    </footer>
+</div>
+<script>
+    const NOTES = [
+        { note: 'C4', type: 'white', freq: 261.63, key: 'a', label: 'A' },
+        { note: 'C#4', type: 'black', freq: 277.18, key: 'w', label: 'W' },
+        { note: 'D4', type: 'white', freq: 293.66, key: 's', label: 'S' },
+        { note: 'D#4', type: 'black', freq: 311.13, key: 'e', label: 'E' },
+        { note: 'E4', type: 'white', freq: 329.63, key: 'd', label: 'D' },
+        { note: 'F4', type: 'white', freq: 349.23, key: 'f', label: 'F' },
+        { note: 'F#4', type: 'black', freq: 369.99, key: 't', label: 'T' },
+        { note: 'G4', type: 'white', freq: 392.00, key: 'g', label: 'G' },
+        { note: 'G#4', type: 'black', freq: 415.30, key: 'y', label: 'Y' },
+        { note: 'A4', type: 'white', freq: 440.00, key: 'h', label: 'H' },
+        { note: 'A#4', type: 'black', freq: 466.16, key: 'u', label: 'U' },
+        { note: 'B4', type: 'white', freq: 493.88, key: 'j', label: 'J' },
+        { note: 'C5', type: 'white', freq: 523.25, key: 'k', label: 'K' },
+        { note: 'C#5', type: 'black', freq: 554.37, key: 'o', label: 'O' },
+        { note: 'D5', type: 'white', freq: 587.33, key: 'l', label: 'L' },
+        { note: 'D#5', type: 'black', freq: 622.25, key: 'p', label: 'P' },
+        { note: 'E5', type: 'white', freq: 659.25, key: ';', label: ';' }
+    ];
+    const CHORDS = {
+        'do-mayor': ['C4', 'E4', 'G4'],
+        'sol-mayor': ['G4', 'B4', 'D5'],
+        're-menor': ['D4', 'F4', 'A4'],
+        'mi-menor': ['E4', 'G4', 'B4'],
+        'fa-mayor': ['F4', 'A4', 'C5']
+    };
+    const DO_MAYOR = ['C4', 'E4', 'G4'];
+    let antiModeActive = false;
+    let activeChord = null;
+    let audioContext;
+    let pressedKeys = new Set();
+    const pianoEl = document.getElementById('piano');
+    const messageEl = document.getElementById('message');
+    const antiModeBtn = document.getElementById('antiModeBtn');
+    function initAudio() {
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+    function playNote(frequency, duration = 0.4) {
+        initAudio();
+        const now = audioContext.currentTime;
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.type = 'triangle';
+        oscillator.frequency.setValueAtTime(frequency, now);
+        gainNode.gain.setValueAtTime(0, now);
+        gainNode.gain.linearRampToValueAtTime(0.35, now + 0.02);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
+        oscillator.start(now);
+        oscillator.stop(now + duration);
+    }
+    function createPiano() {
+        let whiteKeyIndex = 0;
+        NOTES.forEach((noteData) => {
+            const key = document.createElement('div');
+            key.className = `key ${noteData.type}-key`;
+            key.dataset.note = noteData.note;
+            key.dataset.freq = noteData.freq;
+            const label = document.createElement('span');
+            label.className = 'key-label';
+            label.textContent = noteData.label;
+            key.appendChild(label);
+            if (noteData.type === 'white') {
+                pianoEl.appendChild(key);
+                whiteKeyIndex++;
+            } else {
+                const prevWhiteKeys = NOTES.slice(0, NOTES.indexOf(noteData)).filter(n => n.type === 'white').length;
+                const leftPercent = (prevWhiteKeys * 100 / 10) - 4;
+                key.style.left = `${leftPercent}%`;
+                pianoEl.appendChild(key);
+            }
+            key.addEventListener('mousedown', () => handleKeyPress(noteData));
+            key.addEventListener('mouseup', () => handleKeyRelease(noteData));
+            key.addEventListener('mouseleave', () => handleKeyRelease(noteData));
+            key.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                handleKeyPress(noteData);
+            });
+            key.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                handleKeyRelease(noteData);
+            });
+        });
+    }
+    function handleKeyPress(noteData) {
+        const keyEl = document.querySelector(`[data-note="${noteData.note}"]`);
+        if (!keyEl.classList.contains('active')) {
+            keyEl.classList.add('active');
+            playNote(noteData.freq);
+            setTimeout(() => {
+                keyEl.classList.remove('active');
+            }, 150);
+            if (antiModeActive) {
+                checkAntiMode(noteData.note);
+            }
+        }
+    }
+    function handleKeyRelease(noteData) {
+        const keyEl = document.querySelector(`[data-note="${noteData.note}"]`);
+        setTimeout(() => keyEl.classList.remove('active'), 100);
+    }
+    function highlightChord(chordName) {
+        clearHighlights();
+        activeChord = chordName;
+        document.querySelectorAll('.btn-chord').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-chord="${chordName}"]`).classList.add('active');
+        CHORDS[chordName].forEach(note => {
+            const keyEl = document.querySelector(`[data-note="${note}"]`);
+            if (keyEl) keyEl.classList.add('highlight');
+        });
+        showMessage(`🔥 Tocá las teclas con neon para ${chordName.replace('-', ' ').toUpperCase()}`, 'info');
+    }
+    function clearHighlights() {
+        document.querySelectorAll('.key').forEach(key => {
+            key.classList.remove('highlight');
+        });
+        activeChord = null;
+        document.querySelectorAll('.btn-chord').forEach(btn => {
+            btn.classList.remove('active');
+        });
+    }
+    function toggleAntiMode() {
+        antiModeActive = !antiModeActive;
+        pressedKeys.clear();
+        if (antiModeActive) {
+            clearHighlights();
+            antiModeBtn.innerHTML = '<span>✓</span><span>MODO ACTIVO</span>';
+            antiModeBtn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+            antiModeBtn.style.boxShadow = '0 0 20px rgba(34, 197, 94, 0.8), 0 8px 20px rgba(34, 197, 94, 0.4)';
