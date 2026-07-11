@@ -457,3 +457,236 @@
             antiModeBtn.innerHTML = '<span>✓</span><span>MODO ACTIVO</span>';
             antiModeBtn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
             antiModeBtn.style.boxShadow = '0 0 20px rgba(34, 197, 94, 0.8), 0 8px 20px rgba(34, 197, 94, 0.4)';
+            DO_MAYOR.forEach(note => {
+                const keyEl = document.querySelector(`[
+                <script>
+    const NOTES = [
+        { note: 'C4', type: 'white', freq: 261.63, key: 'a', label: 'A' },
+        { note: 'C#4', type: 'black', freq: 277.18, key: 'w', label: 'W' },
+        { note: 'D4', type: 'white', freq: 293.66, key: 's', label: 'S' },
+        { note: 'D#4', type: 'black', freq: 311.13, key: 'e', label: 'E' },
+        { note: 'E4', type: 'white', freq: 329.63, key: 'd', label: 'D' },
+        { note: 'F4', type: 'white', freq: 349.23, key: 'f', label: 'F' },
+        { note: 'F#4', type: 'black', freq: 369.99, key: 't', label: 'T' },
+        { note: 'G4', type: 'white', freq: 392.00, key: 'g', label: 'G' },
+        { note: 'G#4', type: 'black', freq: 415.30, key: 'y', label: 'Y' },
+        { note: 'A4', type: 'white', freq: 440.00, key: 'h', label: 'H' },
+        { note: 'A#4', type: 'black', freq: 466.16, key: 'u', label: 'U' },
+        { note: 'B4', type: 'white', freq: 493.88, key: 'j', label: 'J' },
+        { note: 'C5', type: 'white', freq: 523.25, key: 'k', label: 'K' },
+        { note: 'C#5', type: 'black', freq: 554.37, key: 'o', label: 'O' },
+        { note: 'D5', type: 'white', freq: 587.33, key: 'l', label: 'L' },
+        { note: 'D#5', type: 'black', freq: 622.25, key: 'p', label: 'P' },
+        { note: 'E5', type: 'white', freq: 659.25, key: ';', label: ';' }
+    ];
+    const CHORDS = {
+        'do-mayor': ['C4', 'E4', 'G4'],
+        'sol-mayor': ['G4', 'B4', 'D5'],
+        're-menor': ['D4', 'F4', 'A4'],
+        'mi-menor': ['E4', 'G4', 'B4'],
+        'fa-mayor': ['F4', 'A4', 'C5']
+    };
+    const DO_MAYOR = ['C4', 'E4', 'G4'];
+    let antiModeActive = false;
+    let activeChord = null;
+    let audioContext;
+    let pressedKeys = new Set();
+    const pianoEl = document.getElementById('piano');
+    const messageEl = document.getElementById('message');
+    const antiModeBtn = document.getElementById('antiModeBtn');
+    function initAudio() {
+        if (!audioContext) {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        }
+    }
+    function playNote(frequency, duration = 0.4) {
+        initAudio();
+        const now = audioContext.currentTime;
+        const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        oscillator.type = 'triangle';
+        oscillator.frequency.setValueAtTime(frequency, now);
+        gainNode.gain.setValueAtTime(0, now);
+        gainNode.gain.linearRampToValueAtTime(0.35, now + 0.02);
+        gainNode.gain.exponentialRampToValueAtTime(0.01, now + duration);
+        oscillator.start(now);
+        oscillator.stop(now + duration);
+    }
+    function createPiano() {
+        let whiteKeyIndex = 0;
+        NOTES.forEach((noteData) => {
+            const key = document.createElement('div');
+            key.className = `key ${noteData.type}-key`;
+            key.dataset.note = noteData.note;
+            key.dataset.freq = noteData.freq;
+            const label = document.createElement('span');
+            label.className = 'key-label';
+            label.textContent = noteData.label;
+            key.appendChild(label);
+            if (noteData.type === 'white') {
+                pianoEl.appendChild(key);
+                whiteKeyIndex++;
+            } else {
+                const prevWhiteKeys = NOTES.slice(0, NOTES.indexOf(noteData)).filter(n => n.type === 'white').length;
+                const leftPercent = (prevWhiteKeys * 100 / 10) - 4;
+                key.style.left = `${leftPercent}%`;
+                pianoEl.appendChild(key);
+            }
+            key.addEventListener('mousedown', () => handleKeyPress(noteData));
+            key.addEventListener('mouseup', () => handleKeyRelease(noteData));
+            key.addEventListener('mouseleave', () => handleKeyRelease(noteData));
+            key.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                handleKeyPress(noteData);
+            });
+            key.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                handleKeyRelease(noteData);
+            });
+        });
+    }
+    function handleKeyPress(noteData) {
+        const keyEl = document.querySelector(`[data-note="${noteData.note}"]`);
+        if (!keyEl.classList.contains('active')) {
+            keyEl.classList.add('active');
+            playNote(noteData.freq);
+            setTimeout(() => {
+                keyEl.classList.remove('active');
+            }, 150);
+            if (antiModeActive) {
+                checkAntiMode(noteData.note);
+            }
+        }
+    }
+    function handleKeyRelease(noteData) {
+        const keyEl = document.querySelector(`[data-note="${noteData.note}"]`);
+        setTimeout(() => keyEl.classList.remove('active'), 100);
+    }
+    function highlightChord(chordName) {
+        clearHighlights();
+        activeChord = chordName;
+        document.querySelectorAll('.btn-chord').forEach(btn => {
+            btn.classList.remove('active');
+        });
+        document.querySelector(`[data-chord="${chordName}"]`).classList.add('active');
+        CHORDS[chordName].forEach(note => {
+            const keyEl = document.querySelector(`[data-note="${note}"]`);
+            if (keyEl) keyEl.classList.add('highlight');
+        });
+        showMessage(`🔥 Tocá las teclas con neon para ${chordName.replace('-', ' ').toUpperCase()}`, 'info');
+    }
+    function clearHighlights() {
+        document.querySelectorAll('.key').forEach(key => {
+            key.classList.remove('highlight');
+        });
+        activeChord = null;
+        document.querySelectorAll('.btn-chord').forEach(btn => {
+            btn.classList.remove('active');
+        });
+    }
+    function toggleAntiMode() {
+        antiModeActive = !antiModeActive;
+        pressedKeys.clear();
+        if (antiModeActive) {
+            clearHighlights();
+            antiModeBtn.innerHTML = '<span>✓</span><span>MODO ACTIVO</span>';
+            antiModeBtn.style.background = 'linear-gradient(135deg, #22c55e, #16a34a)';
+            antiModeBtn.style.boxShadow = '0 0 20px rgba(34, 197, 94, 0.8), 0 8px 20px rgba(34, 197, 94, 0.4)';
+            DO_MAYOR.forEach(note => {
+                const keyEl = document.querySelector(`[data-note="${note}"]`);
+                if (keyEl) keyEl.classList.add('highlight');
+            });
+            showMessage('⚡ RETO: Tocá DO - MI - SOL en cualquier orden para completar Do Mayor', 'info');
+        } else {
+            antiModeBtn.innerHTML = '<span>⚡</span><span>MODO ANTI-CINTAS</span>';
+            antiModeBtn.style.background = '';
+            antiModeBtn.style.boxShadow = '';
+            clearHighlights();
+            hideMessage();
+        }
+    }
+    function checkAntiMode(note) {
+        if (!DO_MAYOR.includes(note)) return;
+        pressedKeys.add(note);
+        if (pressedKeys.size === 3 && DO_MAYOR.every(n => pressedKeys.has(n))) {
+            showMessage('🎉 ¡CORRECTO! Acabás de tocar Do Mayor sin cintas ni teoría. Así de fácil.', 'success');
+            createConfetti();
+            antiModeActive = false;
+            pressedKeys.clear();
+            setTimeout(() => {
+                toggleAntiMode();
+            }, 3500);
+        } else if (pressedKeys.size === DO_MAYOR.length) {
+            showMessage(`Bien! Llevas ${pressedKeys.size}/3 notas correctas`, 'info');
+        }
+    }
+    function showMessage(text, type = 'success') {
+        messageEl.textContent = text;
+        messageEl.className = `message ${type}`;
+        messageEl.style.display = 'block';
+    }
+    function hideMessage() {
+        messageEl.style.display = 'none';
+    }
+    function createConfetti() {
+        const colors = ['#facc15', '#8B5CF6', '#EC4899', '#22c55e', '#3b82f6'];
+        for (let i = 0; i < 60; i++) {
+            setTimeout(() => {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                confetti.style.transform = `rotate(${Math.random() * 360}deg)`;
+                document.body.appendChild(confetti);
+                setTimeout(() => confetti.remove(), 3000);
+            }, i * 25);
+        }
+    }
+    function animateCounter() {
+        const el = document.getElementById('studentCount');
+        const target = 2847;
+        let current = 2800;
+        const increment = 1;
+        const interval = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(interval);
+            }
+            el.textContent = current.toLocaleString();
+        }, 50);
+    }
+    document.addEventListener('keydown', (e) => {
+        const noteData = NOTES.find(n => n.key === e.key.toLowerCase());
+        if (noteData && !e.repeat) {
+            handleKeyPress(noteData);
+        }
+    });
+    document.addEventListener('keyup', (e) => {
+        const noteData = NOTES.find(n => n.key === e.key.toLowerCase());
+        if (noteData) {
+            handleKeyRelease(noteData);
+        }
+    });
+    document.querySelectorAll('.btn-chord').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const chord = btn.dataset.chord;
+            if (activeChord === chord) {
+                clearHighlights();
+                hideMessage();
+            } else {
+                highlightChord(chord);
+            }
+        });
+    });
+    antiModeBtn.addEventListener('click', toggleAntiMode);
+    document.addEventListener('click', initAudio, { once: true });
+    document.addEventListener('touchstart', initAudio, { once: true });
+    createPiano();
+    setTimeout(animateCounter, 500);
+</script>
+</body>
+</html>
